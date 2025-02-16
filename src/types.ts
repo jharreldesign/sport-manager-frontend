@@ -33,3 +33,28 @@ export interface Schedule {
   arena: string;  // Arena where the game will take place
   city: string;   // City where the game will be played
 }
+
+// New interface for the form data
+export interface TeamFormState {
+  name: string;
+  city: string;
+  stadium: string;
+  sport: string;
+}
+
+export interface PlayerFormState {
+  player_number: number;
+  first_name: string;
+  last_name: string;
+  hometown: string;
+  position: string;
+  team?: string;
+}
+
+export interface ScheduleFormState {
+  home_team: string;
+  away_team: string;
+  date: string;
+  arena: string;
+  city: string;
+}
