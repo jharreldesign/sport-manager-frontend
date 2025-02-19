@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Player } from '../types';
 import { debounce } from 'lodash';
+import { Link } from 'react-router-dom'; // Import Link
 
 const PlayerList: React.FC = () => {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -73,7 +74,10 @@ const PlayerList: React.FC = () => {
       <ul>
         {players.map((player) => (
           <li key={player._id}>
-            {player.player_number} {player.first_name} {player.last_name} 
+            {/* Make the player's name a link to their detail page */}
+            <Link to={`/players/${player._id}`}>
+              {player.player_number} {player.first_name} {player.last_name}
+            </Link>
             {player.team ? player.team.name : 'No team'} | {player.position}
           </li>
         ))}

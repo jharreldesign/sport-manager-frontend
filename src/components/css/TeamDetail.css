@@ -1,0 +1,73 @@
+/* TeamDetail.css */
+.team-detail {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+button {
+    margin-bottom: 20px;
+}
+
+/* Calendar Styles */
+.calendar {
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 10px;
+}
+
+.calendar-cell {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+    position: relative;
+}
+
+.calendar-cell.header {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.date {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.game-list {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.game {
+    background-color: #f0f0f0;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Loading/Error States */
+.loading, .error {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+/* TeamDetail.css */
+.stadium-photo {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}

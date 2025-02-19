@@ -12,8 +12,9 @@ export interface Team {
   stadium: string;
   sport: string;
   players: Player[];  // Ensure this matches the API data (array of players)
-  schedule: Schedule[];  // Ensure this matches the API data (array of schedules)
+  schedule: Game[];  // Ensure this matches the API data (array of schedules)
   manager: Manager | null;  // Correctly typed to allow null if no manager exists
+  stadium_photo: string;
 }
 
 export interface Player {
@@ -22,16 +23,22 @@ export interface Player {
   last_name: string;
   position: string;
   player_number: number;
-  team?: Team;  // Optional reference to the player's team (may or may not be assigned)
+  headshot?: string; // Add this field
+  team?: Team;  // Optional reference to the player's team
 }
 
-export interface Schedule {
+export interface Game {
   _id: string;
   home_team: Team;  // Full Team object for the home team
   away_team: Team;  // Full Team object for the away team
   date: string;  // ISO date string for the scheduled game (or use Date if needed)
   arena: string;  // Arena where the game will take place
   city: string;   // City where the game will be played
+  location: string;
+  home_score: number;
+  away_score: number;
+  attendance: string;
+  status: string;  // Add status to the interface to avoid the error
 }
 
 // New interface for the form data
@@ -40,6 +47,7 @@ export interface TeamFormState {
   city: string;
   stadium: string;
   sport: string;
+  stadium_photo: string;
 }
 
 export interface PlayerFormState {
@@ -49,6 +57,7 @@ export interface PlayerFormState {
   hometown: string;
   position: string;
   team?: string;
+  headshot: string;
 }
 
 export interface ScheduleFormState {

@@ -7,7 +7,8 @@ const CreateTeam = () => {
     name: "",
     city: "",
     stadium: "",
-    sport: "Baseball", 
+    sport: "Baseball",
+    stadium_photo: "", // Add stadium_photo to the initial state
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -95,6 +96,17 @@ const CreateTeam = () => {
             <option value="Football">Football</option>
             <option value="Soccer">Soccer</option>
           </select>
+        </div>
+        <div>
+          <label htmlFor="stadium_photo">Stadium Photo URL:</label>
+          <input
+            type="text"
+            id="stadium_photo"
+            name="stadium_photo"
+            value={formData.stadium_photo}
+            onChange={handleChange}
+            required
+          />
         </div>
         <button type="submit">Create Team</button>
       </form>

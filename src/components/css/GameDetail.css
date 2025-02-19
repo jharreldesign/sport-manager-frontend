@@ -1,0 +1,28 @@
+.game-detail {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.game-stats, .game-summary {
+    margin-bottom: 20px;
+}
+
+.game-stats h2, .game-summary h2 {
+    margin-bottom: 10px;
+}
+
+.game-stats p, .game-summary p {
+    margin: 0;
+    padding: 0;
+}
+
+.loading, .error {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+}

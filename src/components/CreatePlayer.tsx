@@ -27,6 +27,7 @@ const CreatePlayer = () => {
     hometown: "",
     position: "",
     team: "",
+    headshot: "",
   });
 
   const [teams, setTeams] = useState<Team[]>([]);
@@ -135,7 +136,17 @@ const CreatePlayer = () => {
             required
           />
         </div>
-
+        <div>
+          <label htmlFor="headshot">Headshot:</label>
+          <input
+            type="text"
+            id="headshot"
+            name="headshot"
+            value={formData.headshot}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <div>
           <label htmlFor="position">Position:</label>
           <select
