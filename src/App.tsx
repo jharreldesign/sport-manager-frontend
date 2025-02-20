@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import TeamList from './components/TeamList';
 import TeamDetail from './components/TeamDetail';
@@ -8,52 +8,70 @@ import CreateTeam from './components/CreateTeam';
 import CreatePlayer from './components/CreatePlayer';
 import CreateSchedule from './components/CreateSchedule';
 import GameDetail from './components/GameDetail';
-import Login from './components/Login';
+import SignIn from './components/Login';  // Renamed Login to SignIn for consistency
+import SignUp from './components/SignUp';  // Assuming you have SignUp component
+import NavBar from './components/NavBar'; // Import the NavBar
+import useAuth from './hooks/useAuth';  // Assuming you have `useAuth` hook for managing user state
 
 const App: React.FC = () => {
+  const { token, login, logout } = useAuth(); // Fetch the token using the useAuth hook
+  const [loading, setLoading] = useState(true);
+
+  // Check token on initial load to set login state
+  useEffect(() => {
+    if (token) {
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
+      <NavBar />
       <header>
         <h1>Welcome to the Sports App</h1>
-        <nav>
-          <Link to="/">Home</Link> 
-          | <Link to="/players">Players</Link>
-          | <Link to="/create-player">Create A Player</Link>
-          | <Link to='/teams'>Teams</Link>
-          | <Link to='/create-team'>Create A Team</Link>
-          | <Link to="/login">Login</Link>
-        </nav>
+        {token ? (
+          <div>
+            <p>Welcome!</p>
+            <button onClick={logout}>Sign Out</button>
+          </div>
+        ) : (
+          <div>
+            <Link to="/auth/sign-in">
+              <button>Sign In</button>
+            </Link>
+            <Link to="/auth/sign-up">
+              <button>Sign Up</button>
+            </Link>
+          </div>
+        )}
       </header>
-
       <Routes>
-        {/* Route for the Home page with list of teams */}
+        {/* Public routes for viewing teams and players */}
         <Route path="/" element={<TeamList />} />
-        
-        {/* Route for displaying list of players */}
+        <Route path='/teams' element={<TeamList />} />
         <Route path="/players" element={<PlayerList />} />
-        
-        {/* Route for displaying list of teams */}
-        <Route path="/teams" element={<TeamList />} />
-        
-        {/* Route to create a new team */}
-        <Route path="/create-team" element={<CreateTeam />} />
-        
-        {/* Route to create a new player */}
-        <Route path="/create-player" element={<CreatePlayer />} />
-        
-        {/* Route for creating a schedule for a specific team */}
-        <Route path="/create-schedule/:teamId" element={<CreateSchedule />} />
-
-        {/* Route for displaying team details, with dynamic teamId */}
-        <Route path="/team/:teamId" element={<TeamDetail />} />
-
-        {/* Route for displaying player details, with dynamic playerId */}
+        <Route path="/teams/:teamId" element={<TeamDetail />} />
         <Route path="/players/:playerId" element={<PlayerDetail />} />
+        <Route path="/games/:scheduleId" element={<GameDetail />} />
 
-        <Route path='/games/:scheduleId' element={<GameDetail />} />
-        
-        {/* Route for the Login page */}
-        <Route path="/login" element={<Login />} />
+        {/* Protected routes (only available if logged in) */}
+        {token && (
+          <>
+            <Route path="/create-player" element={<CreatePlayer />} />
+            <Route path="/create-team" element={<CreateTeam />} />
+            <Route path="/create-schedule/:teamId" element={<CreateSchedule />} />
+          </>
+        )}
+
+        {/* Authentication routes */}
+        <Route path="/auth/sign-in" element={<SignIn login={login} />} />
+        <Route path="/auth/sign-up" element={<SignUp />} />
       </Routes>
     </div>
   );

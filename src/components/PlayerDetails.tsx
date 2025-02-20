@@ -19,17 +19,13 @@ const PlayerDetail: React.FC = () => {
             return;
         }
 
+        // Optionally check for a token but don't require it for fetching player details
         const token = localStorage.getItem('authToken');
-        if (!token) {
-            setError('You are not logged in');
-            setLoading(false);
-            return;
-        }
 
         // Fetch player data from the backend
         axios
             .get<Player>(`http://localhost:3000/players/${playerId}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}, // Only send token if available
             })
             .then((response) => {
                 setPlayer(response.data);
@@ -59,44 +55,42 @@ const PlayerDetail: React.FC = () => {
         <div className="player-detail">
             <button onClick={handleGoBack} className="btn btn-secondary">Back</button>
             {player && (
-                <>
-                    <div className="player-header">
-                        {player.headshot && (
-                            <img src={player.headshot} alt={`${player.first_name} ${player.last_name} photo`} className="player-headshot" />
-                        )}
-                        <h1>{player.first_name} {player.last_name}</h1>
-                        <p><strong>Position:</strong> {player.position}</p>
-                        <p><strong>Number:</strong> {player.player_number}</p>
-                        {player.team && (
-                            <p><strong>Team:</strong> {player.team.name}</p>
-                        )}
+                <div className="player-container">
+                    <div className="player-header" style={{ backgroundImage: `url(${player.headshot || 'default-image.jpg'})` }}>
+                        <div className="player-header--vitals">
+                            <div className="player-info">
+                                <img src={player.headshot} alt={`${player.first_name} ${player.last_name}`} className="player-headshot" />
+                                <h1>{player.first_name} {player.last_name}</h1>
+                                <p className="player-position"><strong>Position:</strong> {player.position}</p>
+                                <p className="player-number"><strong>Number:</strong> {player.player_number}</p>
+                                {player.team && (
+                                    <p className="player-team"><strong>Team:</strong> {player.team.name}</p>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
                     <div className="player-stats">
                         <h2>Statistics</h2>
-                        {/* Add player statistics here */}
-                        <p>Batting Average: .300</p>
-                        <p>Home Runs: 25</p>
-                        <p>RBIs: 80</p>
+                        <div className="stats-item"><strong>Batting Average:</strong> .300</div>
+                        <div className="stats-item"><strong>Home Runs:</strong> 25</div>
+                        <div className="stats-item"><strong>RBIs:</strong> 80</div>
                     </div>
 
                     <div className="player-bio">
                         <h2>Biography</h2>
-                        <p>
-                            {player.first_name} {player.last_name} is a professional {player.position} currently playing for {player.team ? player.team.name : 'an unspecified team'}.
-                        </p>
+                        <p>{player.first_name} {player.last_name} is a professional {player.position} currently playing for {player.team ? player.team.name : 'an unspecified team'}.</p>
                     </div>
 
                     <div className="player-games">
                         <h2>Recent Games</h2>
-                        {/* Add recent games here */}
                         <ul>
                             <li>Game 1: 3 hits, 1 HR</li>
                             <li>Game 2: 2 hits, 2 RBIs</li>
                             <li>Game 3: 1 hit, 1 RBI</li>
                         </ul>
                     </div>
-                </>
+                </div>
             )}
         </div>
     );

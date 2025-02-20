@@ -19,18 +19,9 @@ const GameDetail: React.FC = () => {
             return;
         }
 
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            setError('You are not logged in');
-            setLoading(false);
-            return;
-        }
-
         // Fetch the game details from the backend using the scheduleId
         axios
-            .get<Game>(`http://localhost:3000/schedules/${scheduleId}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
+            .get<Game>(`http://localhost:3000/schedules/${scheduleId}`)
             .then((response) => {
                 setGame(response.data); // Set the game data
                 setLoading(false);

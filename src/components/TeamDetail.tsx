@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Team, Game } from '../types'; // Ensure the types are correct and imported
+import { Team, Game } from '../types'; // Ensure these types are correctly imported
 import { Spinner } from 'react-bootstrap';
 import '../components/css/TeamDetail.css';
 
@@ -24,18 +24,19 @@ const TeamDetail: React.FC = () => {
         }
 
         const token = localStorage.getItem('authToken');
-        if (!token) {
-            setError('You are not logged in');
-            setLoading(false);
-            return;
-        }
 
+        // Fetch team details even if not logged in
         axios
             .get<Team>(`http://localhost:3000/teams/${teamId}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}, // Only send token if it's available
             })
             .then((response) => {
                 console.log("Team data fetched successfully:", response.data); // Debugging response
+                if (!response.data) {
+                    setError('No team data found');
+                    setLoading(false);
+                    return;
+                }
                 setTeam(response.data);
                 setLoading(false);
             })

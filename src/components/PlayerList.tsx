@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Player } from '../types';
 import { debounce } from 'lodash';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom'; 
 
 const PlayerList: React.FC = () => {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -17,22 +17,10 @@ const PlayerList: React.FC = () => {
   }, 500);  // Delay search by 500ms
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      setError('You are not logged in');
-      setLoading(false);
-      return;
-    }
-
     const searchParam = searchQuery ? `&search=${searchQuery}` : '';
     axios
       .get<{ players: Player[]; pagination: { totalPages: number; totalPlayers: number } }>(
-        `http://localhost:3000/players?page=${currentPage}${searchParam}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `http://localhost:3000/players?page=${currentPage}${searchParam}`
       )
       .then((response) => {
         const { players, pagination } = response.data;
@@ -74,7 +62,6 @@ const PlayerList: React.FC = () => {
       <ul>
         {players.map((player) => (
           <li key={player._id}>
-            {/* Make the player's name a link to their detail page */}
             <Link to={`/players/${player._id}`}>
               {player.player_number} {player.first_name} {player.last_name}
             </Link>

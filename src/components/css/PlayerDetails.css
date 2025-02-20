@@ -1,33 +1,144 @@
+/* General Styling */
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    background-color: #ECECEC;
+    color: #333;
+    font-family: 'proxima-nova', 'open Sans', 'Helvetica', 'Arial', sans-serif;
+    line-height: 1.5;
+}
+
 .player-detail {
-    padding: 20px;
     font-family: Arial, sans-serif;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+/* Player Header Styling */
 .player-header {
-    text-align: center;
-    margin-bottom: 20px;
+    position: relative;
+    background-size: cover;
+    background-position: top center;
+    max-width: 100%;
+    height: 300px;
+    box-shadow: 0 -30px 50px 20px #000 inset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.player-stats, .player-bio, .player-games {
-    margin-bottom: 20px;
+.player-header--vitals {
+    position: absolute;
+    bottom: 16px;
+    left: 20px;
+    z-index: 1;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 11px #000000;
+    font-size: 1.5rem;
 }
 
-.player-stats h2, .player-bio h2, .player-games h2 {
+.player-header--vitals h1 {
+    font-size: 2.2rem;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
-.player-stats p, .player-bio p, .player-games ul {
-    margin: 0;
-    padding: 0;
+.player-header--vitals p {
+    margin: 5px 0;
+    font-size: 1.2rem;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-headshot {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.player-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Player Stats Section */
+.player-stats {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    width: 80%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.player-stats h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.stats-item {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+/* Player Bio Section */
+.player-bio, .player-games {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    width: 80%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.player-bio h2, .player-games h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+ul {
     list-style-type: none;
+    padding-left: 0;
 }
 
-.player-games ul li {
-    margin-bottom: 5px;
+ul li {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
 }
 
+/* Loading/Error Messages */
 .loading, .error {
     text-align: center;
     margin-top: 20px;
     font-size: 18px;
+}
+
+/* Responsive Styling */
+@media (max-width: 529px) {
+    .player-header--vitals h1 {
+        font-size: 1.5em;
+    }
+
+    .player-header--vitals p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 475px) {
+    .player-header--vitals-name, .player-header--vitals-number {
+        font-size: 24px;
+    }
 }

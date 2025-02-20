@@ -1,21 +1,26 @@
-// hooks/useAuth.ts
 import { useState, useEffect } from 'react';
 
 const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if there's a token in localStorage
-    const token = localStorage.getItem('token');
-    
-    if (token) {
-      setIsAuthenticated(true); // User is authenticated if token exists
-    } else {
-      setIsAuthenticated(false); // No token, user is not authenticated
+    const savedToken = localStorage.getItem('authToken');
+    if (savedToken) {
+      setToken(savedToken);
     }
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
 
-  return isAuthenticated;
+  const login = (newToken: string) => {
+    localStorage.setItem('authToken', newToken);
+    setToken(newToken);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('authToken');
+    setToken(null);
+  };
+
+  return { token, login, logout };
 };
 
 export default useAuth;

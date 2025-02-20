@@ -1,41 +1,34 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';  // This import will be removed if you're passing 'login' directly via props
 
-const Login: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate(); // For navigation after successful login
+const Login: React.FC<{ login: (token: string) => void }> = ({ login }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
     try {
-      // Send a request to the backend for login
-      const response = await axios.post('http://localhost:3000/auth/sign-in', {
-        username,
-        password,
+      // Replace this with your actual login API call
+      const response = await fetch('http://localhost:3000/auth/sign-in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
       });
 
-      // Check if token exists in the response
-      console.log('Token received:', response.data.token);
-
-      if (response.data.token) {
-        // Store the received token in localStorage
-        localStorage.setItem('authToken', response.data.token);
-        console.log('Token saved in localStorage');
-
-        // Redirect to home page (or PlayerList page)
-        navigate('/');
+      const data = await response.json();
+      if (response.ok) {
+        login(data.token);  // Call the login function passed as a prop
+        navigate('/teams');  // Redirect to the teams page after successful login
       } else {
-        setError('Login failed. No token received.');
+        setError(data.message);
       }
-    } catch (err) {
-      setError('Login failed. Invalid credentials.');
-      setLoading(false);
+    } catch (error) {
+      setError('Error logging in');
     }
   };
 
@@ -43,22 +36,26 @@ const Login: React.FC = () => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div>
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
         {error && <div className="error">{error}</div>}
-        <button type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
